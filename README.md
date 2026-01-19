@@ -21,6 +21,7 @@ MovieHive is a sleek, high-performance movie exploration app built with **Flutte
 
 ##  Project Structure
 
+```text
 lib/
 ├── core/                          
 │   ├── theme/
