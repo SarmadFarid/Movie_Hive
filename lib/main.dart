@@ -10,6 +10,16 @@ void main() {
     () async {
 
      WidgetsBinding widgetsBinding =   WidgetsFlutterBinding.ensureInitialized(); 
+
+     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+      statusBarColor: Colors.transparent, 
+      statusBarIconBrightness: Brightness.light, 
+      statusBarBrightness: Brightness.dark,
+      systemNavigationBarColor: AppColors.transparent, 
+      systemNavigationBarIconBrightness: Brightness.light
+      )
+      ); 
+
      FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding); 
      await dotenv.load(fileName: ".env") ;
      
@@ -22,12 +32,7 @@ void main() {
      await Hive.openBox<MovieModel>('movie_box'); 
      await Hive.openBox<MovieModel>("top_rated_movies");
      
-     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-      statusBarColor: Colors.transparent, 
-      statusBarIconBrightness: Brightness.light, 
-      statusBarBrightness: Brightness.dark,
-      )
-      ); 
+     
      
      runApp(const MyApp()); 
 
@@ -55,7 +60,14 @@ class MyApp extends StatelessWidget {
       initialRoute: AppRoutes.splash,
       themeMode: ThemeMode.dark,
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        useMaterial3: true, 
+        brightness: Brightness.dark, 
+        scaffoldBackgroundColor: AppColors.scaffoldBackground, 
+        appBarTheme: const AppBarTheme(
+          systemOverlayStyle: SystemUiOverlayStyle.light, 
+          backgroundColor: Colors.transparent, 
+          elevation: 0,
+        )
       ),
     
     );
