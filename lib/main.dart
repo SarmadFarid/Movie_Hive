@@ -22,7 +22,12 @@ void main() {
      await Hive.openBox<MovieModel>('movie_box'); 
      await Hive.openBox<MovieModel>("top_rated_movies");
      
-     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(statusBarColor: Colors.transparent)); 
+     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+      statusBarColor: Colors.transparent, 
+      statusBarIconBrightness: Brightness.light, 
+      statusBarBrightness: Brightness.dark,
+      )
+      ); 
      
      runApp(const MyApp()); 
 
