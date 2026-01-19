@@ -1,5 +1,6 @@
 import 'package:flutter/services.dart';
-import 'package:movie_hive/core/utills/app_imports.dart'; 
+import 'package:cine_flow/core/utills/app_imports.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart'; 
  
 
 void main() {
@@ -8,10 +9,10 @@ void main() {
   runZonedGuarded(
     () async {
 
-        WidgetsFlutterBinding.ensureInitialized(); 
+     WidgetsBinding widgetsBinding =   WidgetsFlutterBinding.ensureInitialized(); 
+     FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding); 
+     await dotenv.load(fileName: ".env") ;
      
-     await dotenv.load(fileName: ".env") ; 
-      
       FlutterError.onError = (error)  {
         log("framework level error", error: error.toString()); 
       };
@@ -44,9 +45,10 @@ class MyApp extends StatelessWidget {
     builder:(context, child) {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Movie Hive',
+      title: 'CineFlow',
       getPages: AppPages.pages,
-      initialRoute: AppRoutes.home,
+      initialRoute: AppRoutes.splash,
+      themeMode: ThemeMode.dark,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),

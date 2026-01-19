@@ -1,8 +1,7 @@
-import 'package:movie_hive/core/utills/app_imports.dart';
+import 'package:cine_flow/core/utills/app_imports.dart';
 
 class GridcardShimmer extends StatelessWidget {
   final String headerTitle;
-
   final double? height;
   final double? width;
   const GridcardShimmer({

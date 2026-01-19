@@ -1,9 +1,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-package="com.example.movie_hive">
+package="com.sarmad.cineflow">
   <uses-permission android:name="android.permission.INTERNET"/>
   
     <application
-        android:label="Movie Hive"
+        android:label="CineFlow"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

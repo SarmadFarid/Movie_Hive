@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
-import 'package:movie_hive/core/network/api_constants.dart';
-import 'package:movie_hive/core/network/api_intercepetors.dart';
+import 'package:cine_flow/core/network/api_constants.dart';
+import 'package:cine_flow/core/network/api_intercepetors.dart';
 
 class DioClient {
  static final DioClient _singleton = DioClient._internal(); 

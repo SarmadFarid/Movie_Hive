@@ -3,7 +3,7 @@ import 'package:flutter/rendering.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
-import 'package:movie_hive/core/theme/app_colors.dart';
+import 'package:cine_flow/core/theme/app_colors.dart';
 
 class UiHelpers {
   static void showError(String message) {

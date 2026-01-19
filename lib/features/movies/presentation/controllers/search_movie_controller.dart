@@ -1,4 +1,4 @@
-import 'package:movie_hive/core/utills/app_imports.dart';
+import 'package:cine_flow/core/utills/app_imports.dart';
 
 class SearchMovieController extends GetxController {
   final MovieRepository _repo;

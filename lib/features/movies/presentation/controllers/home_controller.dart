@@ -1,4 +1,4 @@
-import 'package:movie_hive/core/utills/app_imports.dart';
+import 'package:cine_flow/core/utills/app_imports.dart';
 
 class HomeController extends GetxController {
   final MovieRepository _repo;
@@ -15,18 +15,20 @@ class HomeController extends GetxController {
   var popularMovies = <MovieModel>[].obs;
   Rx<UpcommingMoviesModel?> upcommingMovies = Rx<UpcommingMoviesModel?>(null);
   Rx<UpcommingMoviesModel?> nowPlayingMoveis = Rx<UpcommingMoviesModel?>(null);
-
-  @override
-  void onInit() {
-    Future.wait([
+ 
+ @override
+  void onReady() {
+     Future.wait([
       fetchTrendingMovies(),
       getTopRatedMovies(),
       getUpcommingMovies(),
       getNowPlayingMovies(),
       fetchPopularMovies(),
     ]);
-    super.onInit();
+    super.onReady();
   }
+
+   
 
   Future<void> fetchTrendingMovies() async {
     if (_storageService.hasData) {

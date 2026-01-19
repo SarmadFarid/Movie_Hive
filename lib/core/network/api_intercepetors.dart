@@ -1,7 +1,7 @@
 import 'dart:developer';
 
 import 'package:dio/dio.dart';
-import 'package:movie_hive/core/network/api_constants.dart';
+import 'package:cine_flow/core/network/api_constants.dart';
 
 class ApiIntercepetors extends Interceptor{
  @override

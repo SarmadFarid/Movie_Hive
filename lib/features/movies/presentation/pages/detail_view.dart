@@ -1,4 +1,4 @@
-import 'package:movie_hive/core/utills/app_imports.dart';
+import 'package:cine_flow/core/utills/app_imports.dart';
 
 class DetailView extends GetView<DetailsController> {
   const DetailView({super.key});
@@ -434,6 +434,7 @@ class DetailView extends GetView<DetailsController> {
                           return Container(
                             margin: EdgeInsets.symmetric(horizontal: 8.w),
                             padding: EdgeInsets.only(bottom: 10.h),
+                             
                             child: MovieGridCard(movie: movie),
                           );
                         },

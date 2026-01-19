@@ -1,4 +1,4 @@
-import 'package:movie_hive/core/network/api_constants.dart';
+import 'package:cine_flow/core/network/api_constants.dart';
 
 class ImageHelper {
   static String getPosterUrl(String path) {

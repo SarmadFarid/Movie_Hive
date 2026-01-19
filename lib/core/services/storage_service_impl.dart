@@ -1,8 +1,8 @@
 import 'package:fpdart/fpdart.dart';
 import 'package:hive_flutter/adapters.dart';
-import 'package:movie_hive/core/errors/failure.dart';
-import 'package:movie_hive/core/services/storage_services.dart';
-import 'package:movie_hive/features/movies/data/models/movie_model.dart';
+import 'package:cine_flow/core/errors/failure.dart';
+import 'package:cine_flow/core/services/storage_services.dart';
+import 'package:cine_flow/features/movies/data/models/movie_model.dart';
 
 class StorageServiceImpl implements StorageServices {
   final Box<MovieModel> _moviesBox;

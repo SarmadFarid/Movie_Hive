@@ -1,4 +1,6 @@
-import 'package:movie_hive/core/utills/app_imports.dart';
+import 'package:cine_flow/core/utills/app_imports.dart';
+import 'package:cine_flow/features/movies/presentation/widgets/shimer/slider_shimmer.dart';
+ 
 
 class HomeView extends StatelessWidget {
   const HomeView({super.key});
@@ -72,7 +74,7 @@ class HomeView extends StatelessWidget {
 
               Obx(() {
                 if (controller.isloading.value) {
-                  return GridcardShimmer(headerTitle: "Treding ");
+                  return SliderShimmer();
                 }
                 if (controller.trendingMovies.isNotEmpty) {
                   return SizedBox(
@@ -100,7 +102,8 @@ class HomeView extends StatelessWidget {
                 }
                 return SizedBox.shrink();
               }),
-
+               
+              
               // popular movies
               Obx(() {
                 if (controller.isloadingPopularmovies.value) {

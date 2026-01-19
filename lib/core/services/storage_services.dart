@@ -1,8 +1,8 @@
  
 
 import 'package:fpdart/fpdart.dart';
-import 'package:movie_hive/core/errors/failure.dart';
-import 'package:movie_hive/features/movies/data/models/movie_model.dart';
+import 'package:cine_flow/core/errors/failure.dart';
+import 'package:cine_flow/features/movies/data/models/movie_model.dart';
 
 abstract class StorageServices {
  Future<Either<Failure, Unit>> cacheTrendingMovies(List<MovieModel> movies) ;  

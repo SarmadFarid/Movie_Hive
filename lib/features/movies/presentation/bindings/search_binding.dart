@@ -1,6 +1,6 @@
-import 'package:movie_hive/core/utills/app_imports.dart';
-import 'package:movie_hive/features/movies/data/repositories/movies_repository_impl.dart';
-import 'package:movie_hive/features/movies/presentation/controllers/search_movie_controller.dart';
+import 'package:cine_flow/core/utills/app_imports.dart';
+import 'package:cine_flow/features/movies/data/repositories/movies_repository_impl.dart';
+import 'package:cine_flow/features/movies/presentation/controllers/search_movie_controller.dart';
 
 class SearchBinding extends Bindings {
   @override
