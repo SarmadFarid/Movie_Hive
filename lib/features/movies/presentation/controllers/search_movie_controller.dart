@@ -1,4 +1,5 @@
 import 'package:cine_flow/core/utills/app_imports.dart';
+import 'package:dio/dio.dart';
 
 class SearchMovieController extends GetxController {
   final MovieRepository _repo;
@@ -10,6 +11,7 @@ class SearchMovieController extends GetxController {
   var errorMessage = "".obs;
   var iserror = false.obs;
   var isloadingSearch = false.obs;
+  CancelToken? _searchCancelToken; 
 
   @override
   void onInit() {
@@ -24,12 +26,20 @@ class SearchMovieController extends GetxController {
   }
 
   Future<void> searchMovie(String query) async {
+    if(_searchCancelToken != null && !_searchCancelToken!.isCancelled) {
+      _searchCancelToken!.cancel("Cancel due to new query");
+    } 
+     _searchCancelToken = CancelToken(); 
+
     isloadingSearch.value = true;
-    final result = await _repo.searchMovies(query);
+    final result = await _repo.searchMovies(query, cancelToken: _searchCancelToken);
     result.fold(
       (failure) {
         isloadingSearch.value = false;
         iserror.value = true;
+        if(failure.message == "Request Cancelled" || failure.message.contains("Cancelled")) {
+          log("Search Cancelled logic works : previous query ignored"); 
+        }
         errorMessage.value = failure.message;
       },
       (movies) {
@@ -53,6 +63,9 @@ class SearchMovieController extends GetxController {
   @override
   void onClose() {
     searchTextController.dispose();
+    if(_searchCancelToken != null && !_searchCancelToken!.isCancelled){
+      _searchCancelToken!.cancel("Page closed!");
+    }
     super.onClose();
   }
 }

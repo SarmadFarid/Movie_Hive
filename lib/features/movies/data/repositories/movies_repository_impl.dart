@@ -1,3 +1,4 @@
+
 import 'package:dio/dio.dart';
 import 'package:cine_flow/core/utills/app_imports.dart';
 
@@ -76,9 +77,9 @@ class MoviesRepositoryImpl implements MovieRepository {
   }
 
   @override
-  Future<Either<Failure, List<CastModel>>> getMoviesCast(int id) async {
+  Future<Either<Failure, List<CastModel>>> getMoviesCast(int id, {CancelToken? cancelToken}) async {
     try {
-      final response = await _dio.get('/movie/$id/credits');
+      final response = await _dio.get('/movie/$id/credits', cancelToken: cancelToken);
       if (response.statusCode == 200) {
         final List<dynamic> result = response.data['cast'];
         final actors = result.map((i) => CastModel.fromJson(i)).toList();
@@ -97,9 +98,9 @@ class MoviesRepositoryImpl implements MovieRepository {
   }
 
   @override
-  Future<Either<Failure, MovieDetailModel>> getMovieDetails(int id) async {
+  Future<Either<Failure, MovieDetailModel>> getMovieDetails(int id,  {CancelToken? cancelToken}) async {
     try {
-      final response = await _dio.get('/movie/$id');
+      final response = await _dio.get('/movie/$id', cancelToken: cancelToken);
       if (response.statusCode == 200) {
         return Right(MovieDetailModel.fromJson(response.data));
       } else {
@@ -116,9 +117,9 @@ class MoviesRepositoryImpl implements MovieRepository {
   }
 
   @override
-  Future<Either<Failure, List<MovieModel>>> getSimilarMovies(int id) async {
+  Future<Either<Failure, List<MovieModel>>> getSimilarMovies(int id,  {CancelToken? cancelToken}) async {
     try {
-      final response = await _dio.get('/movie/$id/similar');
+      final response = await _dio.get('/movie/$id/similar', cancelToken: cancelToken);
       if (response.statusCode == 200) {
         final List<dynamic> results = response.data['results'];
         final movies = results
@@ -183,9 +184,9 @@ class MoviesRepositoryImpl implements MovieRepository {
   }
 
   @override
-  Future<Either<Failure, List<TrailerModel>>> getMovieTrailers(int id) async {
+  Future<Either<Failure, List<TrailerModel>>> getMovieTrailers(int id,  {CancelToken? cancelToken}) async {
     try {
-      final response = await _dio.get("/movie/$id/videos");
+      final response = await _dio.get("/movie/$id/videos", cancelToken: cancelToken);
       if (response.statusCode == 200) {
         final List<dynamic> results = response.data['results'];
         final data = results.map((e) => TrailerModel.fromJson(e)).toList();
@@ -206,11 +207,12 @@ class MoviesRepositoryImpl implements MovieRepository {
   }
 
   @override
-  Future<Either<Failure, List<MovieModel>>> searchMovies(String query) async {
+  Future<Either<Failure, List<MovieModel>>> searchMovies(String query , {CancelToken? cancelToken}) async {
     try {
       final response = await _dio.get(
         '/search/movie',
         queryParameters: {'query': query, 'include_adult': false},
+        cancelToken: cancelToken
       );
       if (response.statusCode == 200) {
         final List<dynamic> results = response.data['results'];
@@ -222,6 +224,9 @@ class MoviesRepositoryImpl implements MovieRepository {
         );
       }
     } on DioException catch (e) {
+      if(CancelToken.isCancel(e)) {
+       return left(Failure("Request Cancelled")); 
+      }
       final error = DioExceptionHandler.parse(e);
       return Left(Failure(error));
     } catch (e) {
@@ -230,9 +235,9 @@ class MoviesRepositoryImpl implements MovieRepository {
   }
 
   @override
-  Future<Either<Failure, List<MovieModel>>> getRecommendedMovies(int id) async {
+  Future<Either<Failure, List<MovieModel>>> getRecommendedMovies(int id,  {CancelToken? cancelToken}) async {
     try {
-      final response = await _dio.get("/movie/$id/recommendations");
+      final response = await _dio.get("/movie/$id/recommendations", cancelToken: cancelToken);
       if (response.statusCode == 200) {
         final List<dynamic> results = response.data['results'];
         final movies = results.map((e) => MovieModel.fromJson(e)).toList();

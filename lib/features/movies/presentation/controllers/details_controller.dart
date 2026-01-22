@@ -1,9 +1,10 @@
 import 'package:cine_flow/core/utills/app_imports.dart';
+import 'package:dio/dio.dart';
 
 class DetailsController extends GetxController {
   final MovieRepository _repo;
   DetailsController(this._repo);
-
+  
   late MovieModel movie;
   var isloadingCast = false.obs;
   var isloadingDetails = false.obs;
@@ -15,6 +16,8 @@ class DetailsController extends GetxController {
   var similarMovies = <MovieModel>[].obs;
   var recommendedmovies = <MovieModel>[].obs;
   Rx<MovieDetailModel?> movieDetails = Rx<MovieDetailModel?>(null);
+ 
+  final CancelToken _pageCancelToken = CancelToken(); 
 
   @override
   void onInit() {
@@ -31,9 +34,9 @@ class DetailsController extends GetxController {
     ]);
   }
 
-  Future<void> fetchMovieCast(int id) async {
+  Future<void> fetchMovieCast(int id,) async {
     isloadingCast.value = true;
-    final result = await _repo.getMoviesCast(id);
+    final result = await _repo.getMoviesCast(id, cancelToken: _pageCancelToken);
     result.fold(
       (failure) {
         isloadingCast.value = false;
@@ -48,7 +51,7 @@ class DetailsController extends GetxController {
 
   Future<void> fetchMovieDetails(int id) async {
     isloadingDetails.value = true;
-    final result = await _repo.getMovieDetails(id);
+    final result = await _repo.getMovieDetails(id, cancelToken: _pageCancelToken);
     result.fold(
       (failure) {
         isloadingDetails.value = false;
@@ -63,7 +66,7 @@ class DetailsController extends GetxController {
 
   Future<void> fetchSimilarMovies(int id) async {
     isloadingSimilar.value = true;
-    final result = await _repo.getSimilarMovies(id);
+    final result = await _repo.getSimilarMovies(id,cancelToken:  _pageCancelToken);
     result.fold(
       (failure) {
         isloadingSimilar.value = false;
@@ -78,7 +81,7 @@ class DetailsController extends GetxController {
 
   Future<void> fetchMovieTrailers(int id) async {
     isloadingTrailers.value = true;
-    final result = await _repo.getMovieTrailers(id);
+    final result = await _repo.getMovieTrailers(id, cancelToken: _pageCancelToken);
     result.fold(
       (failure) {
         isloadingTrailers.value = false;
@@ -93,7 +96,7 @@ class DetailsController extends GetxController {
 
   Future<void> fetchRecommendedMovies(int id) async {
     isloadingRecommended.value = true ;
-    final result = await _repo.getRecommendedMovies(id);
+    final result = await _repo.getRecommendedMovies(id, cancelToken: _pageCancelToken);
     result.fold(
       (failure) {
         isloadingRecommended.value = false;
@@ -105,5 +108,14 @@ class DetailsController extends GetxController {
       },
     );
   }
- 
+  
+
+
+ @override
+  void onClose() {
+   if(!_pageCancelToken.isCancelled){
+      _pageCancelToken.cancel("User left the screen "); 
+   }
+  }
+
  }
