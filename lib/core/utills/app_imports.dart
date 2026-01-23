@@ -10,7 +10,6 @@ export 'package:cine_flow/features/movies/domain/repositories/movie_repository.d
 export 'dart:async';
 export 'package:flutter_dotenv/flutter_dotenv.dart';
 export 'package:get/route_manager.dart';
-export 'package:hive_flutter/adapters.dart';
 export 'package:cine_flow/core/routes/app_pages.dart';
 export 'package:carousel_slider/carousel_slider.dart';
 export 'package:cine_flow/features/movies/presentation/controllers/home_controller.dart';
@@ -44,3 +43,9 @@ export 'package:intl/intl.dart' hide TextDirection;
 export 'package:cine_flow/features/movies/presentation/widgets/shimer/detail_content_shimmer.dart';
 export 'package:cine_flow/features/movies/presentation/widgets/common/section_header.dart';
 export 'package:cine_flow/features/movies/presentation/widgets/shimer/gridcard_shimmer.dart';
+export 'package:hive_flutter/adapters.dart'; 
+export 'package:flutter_native_splash/flutter_native_splash.dart';
+export 'package:flutter/services.dart';
+export 'package:cine_flow/core/network/api_constants.dart';
+export 'package:cine_flow/core/services/storage_service_impl.dart';
+export 'package:cine_flow/features/movies/data/repositories/movies_repository_impl.dart';

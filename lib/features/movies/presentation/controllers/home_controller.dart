@@ -2,8 +2,8 @@ import 'package:cine_flow/core/utills/app_imports.dart';
 
 class HomeController extends GetxController {
   final MovieRepository _repo;
-  final StorageServices _storageService;
-  HomeController(this._repo, this._storageService);
+  // final StorageServices _storageService;
+  HomeController(this._repo,);
 
   var isloading = false.obs;
   var isloadingTopRated = false.obs;
@@ -15,10 +15,10 @@ class HomeController extends GetxController {
   var popularMovies = <MovieModel>[].obs;
   Rx<UpcommingMoviesModel?> upcommingMovies = Rx<UpcommingMoviesModel?>(null);
   Rx<UpcommingMoviesModel?> nowPlayingMoveis = Rx<UpcommingMoviesModel?>(null);
- 
- @override
+
+  @override
   void onReady() {
-     Future.wait([
+    Future.wait([
       fetchTrendingMovies(),
       getTopRatedMovies(),
       getUpcommingMovies(),
@@ -28,46 +28,23 @@ class HomeController extends GetxController {
     super.onReady();
   }
 
-   
-
   Future<void> fetchTrendingMovies() async {
-    if (_storageService.hasData) {
-      final cahcedMovies = await _storageService.fetchCachedTrendingMovies();
-      cahcedMovies.fold((failure) => null, (movies) {
-        trendingMovies.assignAll(movies);
-      });
-    } else {
-      isloading.value = true;
-    }
-
+    isloading.value = true;
     final result = await _repo.getTrendingMovies();
-
     result.fold(
       (failure) {
         isloading.value = false;
-        if (trendingMovies.isEmpty) {
-          UiHelpers.showError(failure.message);
-        } else {
-          UiHelpers.showSuccess("Offline Mood !");
-        }
+        UiHelpers.showError(failure.message);
       },
       (movies) async {
         trendingMovies.assignAll(movies);
         isloading.value = false;
-        final savedResult = await _storageService.cacheTrendingMovies(movies);
-        savedResult.fold(
-          (failure) {
-            log("Cache save failed : ${failure.message}");
-          },
-          (success) {
-            log("cache save successfully");
-          },
-        );
       },
     );
   }
 
   Future<void> fetchPopularMovies() async {
+    isloadingPopularmovies.value = true ;
     final result = await _repo.getPopularMovies();
     result.fold(
       (failure) {
@@ -80,44 +57,19 @@ class HomeController extends GetxController {
       },
     );
   }
-  
+
   Future<void> getTopRatedMovies() async {
-    if (_storageService.hasTopRatedMovies) {
-      final cacheMovies = await _storageService.fetchCachedTopRatedMovies();
-      cacheMovies.fold(
-        (failure) {
-          log('fetching cahce top rated movies error ${failure.message}');
-        },
-        (movies) {
-          topRatedMovies.assignAll(movies);
-        },
-      );
-    } else {
-      isloadingTopRated.value = true;
-    }
+    isloadingTopRated.value = true;
 
     final apiResult = await _repo.getTopRatedMovies();
     apiResult.fold(
       (failure) {
-        isloading.value = false;
-        if (topRatedMovies.isEmpty) {
-          UiHelpers.showError(failure.message);
-        } else {
-          UiHelpers.showSuccess("Offline Mood!");
-        }
+        isloadingTopRated.value = false;
+        UiHelpers.showError(failure.message);
       },
       (movies) async {
-        isloading.value = false;
+        isloadingTopRated.value = false;
         topRatedMovies.assignAll(movies);
-        final result = await _storageService.cacheTopRatedMovies(movies);
-        result.fold(
-          (failure) {
-            log('Save Cache top rated movies error : ${failure.message}');
-          },
-          (success) {
-            log('Save cache top rated movies Successfully');
-          },
-        );
       },
     );
   }

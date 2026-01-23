@@ -1,11 +1,8 @@
-import 'package:flutter/services.dart';
+
 import 'package:cine_flow/core/utills/app_imports.dart';
-import 'package:flutter_native_splash/flutter_native_splash.dart'; 
- 
 
 void main() {
 
- 
   runZonedGuarded(
     () async {
 
@@ -21,6 +18,7 @@ void main() {
       ); 
 
      FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding); 
+
      await dotenv.load(fileName: ".env") ;
      
       FlutterError.onError = (error)  {
@@ -31,6 +29,7 @@ void main() {
      Hive.registerAdapter(MovieModelAdapter()); 
      await Hive.openBox<MovieModel>('movie_box'); 
      await Hive.openBox<MovieModel>("top_rated_movies");
+     await Hive.openBox("api_cache"); 
      
      
      

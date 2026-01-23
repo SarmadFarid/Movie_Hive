@@ -1,5 +1,5 @@
 import 'package:fpdart/fpdart.dart';
-import 'package:hive_flutter/adapters.dart';
+import 'package:hive/hive.dart';
 import 'package:cine_flow/core/errors/failure.dart';
 import 'package:cine_flow/core/services/storage_services.dart';
 import 'package:cine_flow/features/movies/data/models/movie_model.dart';

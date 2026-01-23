@@ -1,4 +1,3 @@
-
 import 'package:dio/dio.dart';
 import 'package:cine_flow/core/utills/app_imports.dart';
 
@@ -12,7 +11,7 @@ class MoviesRepositoryImpl implements MovieRepository {
       if (response.statusCode == 200) {
         final List<dynamic> results = response.data["results"];
         final movies = results
-            .map((item) => MovieModel.fromJson(item))
+            .map((item) => MovieModel.fromJson(Map<String, dynamic>.from(item)))
             .toList();
         return Right(movies);
       } else {
@@ -36,7 +35,9 @@ class MoviesRepositoryImpl implements MovieRepository {
       final response = await _dio.get(ApiEndpoints.popular);
       if (response.statusCode == 200) {
         final List<dynamic> results = response.data['results'];
-        final movies = results.map((e) => MovieModel.fromJson(e)).toList();
+        final movies = results
+            .map((e) => MovieModel.fromJson(Map<String, dynamic>.from(e)))
+            .toList();
         return Right(movies);
       } else {
         return Left(
@@ -58,7 +59,9 @@ class MoviesRepositoryImpl implements MovieRepository {
       if (response.statusCode == 200) {
         final List<dynamic> results = response.data['results'];
         final movies = results
-            .map((movie) => MovieModel.fromJson(movie))
+            .map(
+              (movie) => MovieModel.fromJson(movie as Map<String, dynamic>),
+            )
             .toList();
         return Right(movies);
       } else {
@@ -77,12 +80,20 @@ class MoviesRepositoryImpl implements MovieRepository {
   }
 
   @override
-  Future<Either<Failure, List<CastModel>>> getMoviesCast(int id, {CancelToken? cancelToken}) async {
+  Future<Either<Failure, List<CastModel>>> getMoviesCast(
+    int id, {
+    CancelToken? cancelToken,
+  }) async {
     try {
-      final response = await _dio.get('/movie/$id/credits', cancelToken: cancelToken);
+      final response = await _dio.get(
+        '/movie/$id/credits',
+        cancelToken: cancelToken,
+      );
       if (response.statusCode == 200) {
         final List<dynamic> result = response.data['cast'];
-        final actors = result.map((i) => CastModel.fromJson(i)).toList();
+        final actors = result
+            .map((i) => CastModel.fromJson(Map<String, dynamic>.from(i)))
+            .toList();
         return Right(actors);
       } else {
         return Left(
@@ -98,7 +109,10 @@ class MoviesRepositoryImpl implements MovieRepository {
   }
 
   @override
-  Future<Either<Failure, MovieDetailModel>> getMovieDetails(int id,  {CancelToken? cancelToken}) async {
+  Future<Either<Failure, MovieDetailModel>> getMovieDetails(
+    int id, {
+    CancelToken? cancelToken,
+  }) async {
     try {
       final response = await _dio.get('/movie/$id', cancelToken: cancelToken);
       if (response.statusCode == 200) {
@@ -117,13 +131,21 @@ class MoviesRepositoryImpl implements MovieRepository {
   }
 
   @override
-  Future<Either<Failure, List<MovieModel>>> getSimilarMovies(int id,  {CancelToken? cancelToken}) async {
+  Future<Either<Failure, List<MovieModel>>> getSimilarMovies(
+    int id, {
+    CancelToken? cancelToken,
+  }) async {
     try {
-      final response = await _dio.get('/movie/$id/similar', cancelToken: cancelToken);
+      final response = await _dio.get(
+        '/movie/$id/similar',
+        cancelToken: cancelToken,
+      );
       if (response.statusCode == 200) {
         final List<dynamic> results = response.data['results'];
         final movies = results
-            .map((movie) => MovieModel.fromJson(movie))
+            .map(
+              (movie) => MovieModel.fromJson(Map<String, dynamic>.from(movie)),
+            )
             .toList();
         return Right(movies);
       } else {
@@ -144,7 +166,9 @@ class MoviesRepositoryImpl implements MovieRepository {
     try {
       final response = await _dio.get(ApiEndpoints.upcommingMovies);
       if (response.statusCode == 200) {
-        final data = UpcommingMoviesModel.formJson(response.data);
+        final data = UpcommingMoviesModel.formJson(
+          Map<String, dynamic>.from(response.data),
+        );
         return right(data);
       } else {
         return Left(
@@ -166,7 +190,9 @@ class MoviesRepositoryImpl implements MovieRepository {
     try {
       final response = await _dio.get(ApiEndpoints.nowPlaying);
       if (response.statusCode == 200) {
-        final data = UpcommingMoviesModel.formJson(response.data);
+        final data = UpcommingMoviesModel.formJson(
+          Map<String, dynamic>.from(response.data),
+        );
         return Right(data);
       } else {
         return Left(
@@ -184,12 +210,20 @@ class MoviesRepositoryImpl implements MovieRepository {
   }
 
   @override
-  Future<Either<Failure, List<TrailerModel>>> getMovieTrailers(int id,  {CancelToken? cancelToken}) async {
+  Future<Either<Failure, List<TrailerModel>>> getMovieTrailers(
+    int id, {
+    CancelToken? cancelToken,
+  }) async {
     try {
-      final response = await _dio.get("/movie/$id/videos", cancelToken: cancelToken);
+      final response = await _dio.get(
+        "/movie/$id/videos",
+        cancelToken: cancelToken,
+      );
       if (response.statusCode == 200) {
         final List<dynamic> results = response.data['results'];
-        final data = results.map((e) => TrailerModel.fromJson(e)).toList();
+        final data = results
+            .map((e) => TrailerModel.fromJson(Map<String, dynamic>.from(e)))
+            .toList();
         return Right(data);
       } else {
         return Left(
@@ -207,16 +241,21 @@ class MoviesRepositoryImpl implements MovieRepository {
   }
 
   @override
-  Future<Either<Failure, List<MovieModel>>> searchMovies(String query , {CancelToken? cancelToken}) async {
+  Future<Either<Failure, List<MovieModel>>> searchMovies(
+    String query, {
+    CancelToken? cancelToken,
+  }) async {
     try {
       final response = await _dio.get(
         '/search/movie',
         queryParameters: {'query': query, 'include_adult': false},
-        cancelToken: cancelToken
+        cancelToken: cancelToken,
       );
       if (response.statusCode == 200) {
         final List<dynamic> results = response.data['results'];
-        final movies = results.map((e) => MovieModel.fromJson(e)).toList();
+        final movies = results
+            .map((e) => MovieModel.fromJson(Map<String, dynamic>.from(e)))
+            .toList();
         return Right(movies);
       } else {
         return Left(
@@ -224,8 +263,8 @@ class MoviesRepositoryImpl implements MovieRepository {
         );
       }
     } on DioException catch (e) {
-      if(CancelToken.isCancel(e)) {
-       return left(Failure("Request Cancelled")); 
+      if (CancelToken.isCancel(e)) {
+        return left(Failure("Request Cancelled"));
       }
       final error = DioExceptionHandler.parse(e);
       return Left(Failure(error));
@@ -235,12 +274,20 @@ class MoviesRepositoryImpl implements MovieRepository {
   }
 
   @override
-  Future<Either<Failure, List<MovieModel>>> getRecommendedMovies(int id,  {CancelToken? cancelToken}) async {
+  Future<Either<Failure, List<MovieModel>>> getRecommendedMovies(
+    int id, {
+    CancelToken? cancelToken,
+  }) async {
     try {
-      final response = await _dio.get("/movie/$id/recommendations", cancelToken: cancelToken);
+      final response = await _dio.get(
+        "/movie/$id/recommendations",
+        cancelToken: cancelToken,
+      );
       if (response.statusCode == 200) {
         final List<dynamic> results = response.data['results'];
-        final movies = results.map((e) => MovieModel.fromJson(e)).toList();
+        final movies = results
+            .map((e) => MovieModel.fromJson(Map<String, dynamic>.from(e)))
+            .toList();
         return Right(movies);
       } else {
         return Left(
